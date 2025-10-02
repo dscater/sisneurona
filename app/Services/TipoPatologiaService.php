@@ -4,16 +4,16 @@ namespace App\Services;
 
 use App\Models\ReporteFinanciero;
 use App\Services\HistorialAccionService;
-use App\Models\TipoDocumento;
-use App\Models\TipoDocumentoMaterial;
-use App\Models\TipoDocumentoOperario;
+use App\Models\TipoPatologia;
+use App\Models\TipoPatologiaMaterial;
+use App\Models\TipoPatologiaOperario;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
-class TipoDocumentoService
+class TipoPatologiaService
 {
     private $modulo = "TIPO DE DOCUMENTOS";
 
@@ -21,14 +21,14 @@ class TipoDocumentoService
 
     public function listado(): Collection
     {
-        $tipo_documentos = TipoDocumento::select("tipo_documentos.*");
+        $tipo_documentos = TipoPatologia::select("tipo_documentos.*");
         $tipo_documentos = $tipo_documentos->get();
         return $tipo_documentos;
     }
 
     public function listadoDataTable(int $length, int $start, int $page, string $search): LengthAwarePaginator
     {
-        $tipo_documentos = TipoDocumento::select("tipo_documentos.*");
+        $tipo_documentos = TipoPatologia::select("tipo_documentos.*");
         if ($search && trim($search) != '') {
             $tipo_documentos->where("nombre", "LIKE", "%$search%");
         }
@@ -40,11 +40,11 @@ class TipoDocumentoService
      * Crear tipo_documento
      *
      * @param array $datos
-     * @return TipoDocumento
+     * @return TipoPatologia
      */
-    public function crear(array $datos): TipoDocumento
+    public function crear(array $datos): TipoPatologia
     {
-        $tipo_documento = TipoDocumento::create([
+        $tipo_documento = TipoPatologia::create([
             "nombre" => mb_strtoupper($datos["nombre"]),
             "descripcion" => mb_strtoupper($datos["descripcion"]),
             "fecha_registro" => date("Y-m-d")
@@ -59,10 +59,10 @@ class TipoDocumentoService
      * Actualizar tipo_documento
      *
      * @param array $datos
-     * @param TipoDocumento $tipo_documento
-     * @return TipoDocumento
+     * @param TipoPatologia $tipo_documento
+     * @return TipoPatologia
      */
-    public function actualizar(array $datos, TipoDocumento $tipo_documento): TipoDocumento
+    public function actualizar(array $datos, TipoPatologia $tipo_documento): TipoPatologia
     {
         $old_tipo_documento = clone $tipo_documento;
         $tipo_documento->update([
@@ -78,10 +78,10 @@ class TipoDocumentoService
     /**
      * Eliminar tipo_documento
      *
-     * @param TipoDocumento $tipo_documento
+     * @param TipoPatologia $tipo_documento
      * @return boolean
      */
-    public function eliminar(TipoDocumento $tipo_documento): bool
+    public function eliminar(TipoPatologia $tipo_documento): bool
     {
         // verificar usos
         $usos = ReporteFinanciero::where("tipo_documento_id", $tipo_documento->id)->get();

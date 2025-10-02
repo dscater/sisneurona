@@ -548,7 +548,41 @@ const logout = () => {
                 >
                     <Link :href="route('pacientes.index')" class="menu-link">
                         <div class="menu-icon">
-                            <i class="fa fa-list"></i>
+                            <i class="fa fa-clipboard-list"></i>
+                        </div>
+                        <div class="menu-text">Generar Diagnóstico</div>
+                    </Link>
+                </div>
+                <div
+                    v-if="
+                        user_logeado.permisos == '*' ||
+                        user_logeado.permisos.includes('pacientes.index')
+                    "
+                    class="menu-item"
+                    :class="[
+                        route_current == 'pacientes.index' ? 'active' : 'none',
+                    ]"
+                >
+                    <Link :href="route('pacientes.index')" class="menu-link">
+                        <div class="menu-icon">
+                            <i class="fa fa-file-alt"></i>
+                        </div>
+                        <div class="menu-text">Historial del Paciente</div>
+                    </Link>
+                </div>
+                <div
+                    v-if="
+                        user_logeado.permisos == '*' ||
+                        user_logeado.permisos.includes('pacientes.index')
+                    "
+                    class="menu-item"
+                    :class="[
+                        route_current == 'pacientes.index' ? 'active' : 'none',
+                    ]"
+                >
+                    <Link :href="route('pacientes.index')" class="menu-link">
+                        <div class="menu-icon">
+                            <i class="fa fa-user-friends"></i>
                         </div>
                         <div class="menu-text">Pacientes</div>
                     </Link>
@@ -572,7 +606,7 @@ const logout = () => {
                         <div class="menu-icon">
                             <i class="fa fa-list"></i>
                         </div>
-                        <div class="menu-text">Tipo de documentos</div>
+                        <div class="menu-text">Tipo de Patologías</div>
                     </Link>
                 </div>
                 <div
@@ -637,7 +671,45 @@ const logout = () => {
                         <div class="menu-icon">
                             <i class="fa fa-file-alt"></i>
                         </div>
-                        <div class="menu-text">Lista de Clientes</div>
+                        <div class="menu-text">Lista de Pacientes</div>
+                    </Link>
+                </div>
+                <div
+                    v-if="
+                        user_logeado.permisos == '*' ||
+                        user_logeado.permisos.includes('reportes.pacientes')
+                    "
+                    class="menu-item"
+                    :class="[
+                        route_current == 'reportes.pacientes'
+                            ? 'active'
+                            : 'none',
+                    ]"
+                >
+                    <Link :href="route('reportes.pacientes')" class="menu-link">
+                        <div class="menu-icon">
+                            <i class="fa fa-file-alt"></i>
+                        </div>
+                        <div class="menu-text">Historial de Pacientes</div>
+                    </Link>
+                </div>
+                <div
+                    v-if="
+                        user_logeado.permisos == '*' ||
+                        user_logeado.permisos.includes('reportes.pacientes')
+                    "
+                    class="menu-item"
+                    :class="[
+                        route_current == 'reportes.pacientes'
+                            ? 'active'
+                            : 'none',
+                    ]"
+                >
+                    <Link :href="route('reportes.pacientes')" class="menu-link">
+                        <div class="menu-icon">
+                            <i class="fa fa-file-alt"></i>
+                        </div>
+                        <div class="menu-text">Reporte Diagnóstico</div>
                     </Link>
                 </div>
                 <div
@@ -656,7 +728,7 @@ const logout = () => {
                         <div class="menu-icon">
                             <i class="fa fa-chart-column"></i>
                         </div>
-                        <div class="menu-text">G. Reporte Financiero</div>
+                        <div class="menu-text">G. Reporte Diagnóstico</div>
                     </Link>
                 </div>
                 <div class="menu-header">OTROS</div>

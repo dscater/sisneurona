@@ -335,33 +335,6 @@ onMounted(() => {
                                 </ul>
                             </div>
                             <div class="col-md-4 mt-2">
-                                <label>Tipo de Usuario*</label>
-                                <select
-                                    class="form-select"
-                                    :class="{
-                                        'parsley-error': form.errors?.tipo,
-                                    }"
-                                    v-model="form.tipo"
-                                >
-                                    <option value="">- Seleccione -</option>
-                                    <option
-                                        v-for="item in listTipos"
-                                        :value="item.value"
-                                    >
-                                        {{ item.label }}
-                                    </option>
-                                </select>
-
-                                <ul
-                                    v-if="form.errors?.tipo"
-                                    class="parsley-errors-list filled"
-                                >
-                                    <li class="parsley-required">
-                                        {{ form.errors?.tipo }}
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-md-4 mt-2">
                                 <label>Foto</label>
                                 <input
                                     type="file"

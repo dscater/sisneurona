@@ -134,7 +134,8 @@ onMounted(() => {
 
                                     <label
                                         for="name"
-                                        class="d-flex align-items-center text-gray-600 fs-13px" style="z-index: 100;"
+                                        class="d-flex align-items-center text-gray-600 fs-13px"
+                                        style="z-index: 100"
                                         >Contraseña</label
                                     >
                                     <button
@@ -197,6 +198,11 @@ onMounted(() => {
     justify-content: center;
     width: 100%;
     height: 100%;
+}
+
+.login-container {
+    background: var(--secundario);
+    padding: 20px !important;
 }
 
 .logo_login {

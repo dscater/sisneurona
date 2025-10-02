@@ -13,7 +13,7 @@ const oUsuario = ref({
     dir: "",
     correo: "",
     fono: "",
-    tipo: "",
+    tipo: "DOCTOR",
     foto: "",
     url_foto: "",
     fecha_registro: "",
@@ -187,7 +187,7 @@ export const useUsuarios = () => {
         oUsuario.value.fono = "";
         oUsuario.value.password = "";
         oUsuario.value.acceso = 0 + "";
-        oUsuario.value.tipo = "";
+        oUsuario.value.tipo = "DOCTOR";
         oUsuario.value.foto = null;
         oUsuario.value.url_foto = "";
         oUsuario.value.fecha_registro = "";

@@ -1,6 +1,6 @@
 <script setup>
 import { useForm, usePage } from "@inertiajs/vue3";
-import { useTipoDocumentos } from "@/composables/tipo_documentos/useTipoDocumentos";
+import { useTipoPatologias } from "@/composables/tipo_patologias/useTipoPatologias";
 import { useAxios } from "@/composables/axios/useAxios";
 import { watch, ref, computed, defineEmits, onMounted, nextTick } from "vue";
 import axios from "axios";
@@ -15,11 +15,11 @@ const props = defineProps({
     },
 });
 
-const { oTipoDocumento, limpiarTipoDocumento } = useTipoDocumentos();
+const { oTipoPatologia, limpiarTipoPatologia } = useTipoPatologias();
 const { axiosGet } = useAxios();
 const accion = ref(props.accion_dialog);
 const dialog = ref(props.open_dialog);
-let form = useForm(oTipoDocumento.value);
+let form = useForm(oTipoPatologia.value);
 watch(
     () => props.open_dialog,
     async (newValue) => {
@@ -28,7 +28,7 @@ watch(
             document
                 .getElementsByTagName("body")[0]
                 .classList.add("modal-open");
-            form = useForm(oTipoDocumento.value);
+            form = useForm(oTipoPatologia.value);
         }
     }
 );
@@ -43,15 +43,15 @@ const { flash, auth } = usePage().props;
 
 const tituloDialog = computed(() => {
     return accion.value == 0
-        ? `<i class="fa fa-plus"></i> Nuevo Tipo de Documento`
-        : `<i class="fa fa-edit"></i> Editar Tipo de Documento`;
+        ? `<i class="fa fa-plus"></i> Nuevo Tipo de Patologia`
+        : `<i class="fa fa-edit"></i> Editar Tipo de Patologia`;
 });
 
 const enviarFormulario = () => {
     let url =
         form["_method"] == "POST"
-            ? route("tipo_documentos.store")
-            : route("tipo_documentos.update", form.id);
+            ? route("tipo_patologias.store")
+            : route("tipo_patologias.update", form.id);
 
     form.post(url, {
         preserveScroll: true,
@@ -65,7 +65,7 @@ const enviarFormulario = () => {
                 confirmButtonColor: "#3085d6",
                 confirmButtonText: `Aceptar`,
             });
-            limpiarTipoDocumento();
+            limpiarTipoPatologia();
             emits("envio-formulario");
         },
         onError: (err) => {
@@ -136,7 +136,7 @@ onMounted(() => {});
                             </div>
                             <div class="col-md-6">
                                 <label class="required"
-                                    >Nombre del Documento</label
+                                    >Nombre del Patologia</label
                                 >
                                 <el-input
                                     type="text"
@@ -158,7 +158,7 @@ onMounted(() => {});
                             <div class="col-md-6">
                                 <label>Descripción</label>
                                 <el-input
-                                    type="textipo_documento"
+                                    type="textipo_patologia"
                                     :class="{
                                         'parsley-error':
                                             form.errors?.descripcion,

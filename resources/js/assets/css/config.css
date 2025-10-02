@@ -1,13 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&display=swap");
 :root {
-    --principal: #007235;
-    --principal_hover: #007235;
-    --principal-portal: #007235;
+    --principal: #791c2e;
+    --principal_hover: #58111f;
+    --principal-portal: #791c2e;
     --principal-portal2: #465966;
-    --principal-portal3: #007235;
+    --principal-portal3: #791c2e;
     --principal_transparent: #004a80bd;
     --principal_portal_transparent: #049bd1;
-    --secundario: #ffe419;
+    --secundario: #79789b;
     --secundario_hover: #e9cf0e;
     --fondo_app: #e8e9eb;
     --correcto: #d2e7c9;
@@ -373,7 +373,8 @@ html {
 .app-sidebar .menu .menu-item.active > .menu-link,
 .app-sidebar .menu .menu-item.active > .menu-link .menu-icon i {
     background-color: var(--secundario);
-    color: rgb(50, 50, 50);
+    color: var(--principal_hover);
+    font-weight: 700;
 }
 
 .app-sidebar .menu .menu-item.active > .menu-link .menu-icon {

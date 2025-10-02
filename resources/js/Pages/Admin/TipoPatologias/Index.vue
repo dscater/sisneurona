@@ -1,7 +1,7 @@
 <script setup>
 import { useApp } from "@/composables/useApp";
 import { Head, Link, router, usePage } from "@inertiajs/vue3";
-import { useTipoDocumentos } from "@/composables/tipo_documentos/useTipoDocumentos";
+import { useTipoPatologias } from "@/composables/tipo_patologias/useTipoPatologias";
 import { useAxios } from "@/composables/axios/useAxios";
 import { initDataTable } from "@/composables/datatable.js";
 import { ref, onMounted, onBeforeUnmount } from "vue";
@@ -17,7 +17,7 @@ onMounted(() => {
     }, 300);
 });
 
-const { setTipoDocumento, limpiarTipoDocumento } = useTipoDocumentos();
+const { setTipoPatologia, limpiarTipoPatologia } = useTipoPatologias();
 const { axiosDelete } = useAxios();
 
 const columns = [
@@ -45,7 +45,7 @@ const columns = [
 
             if (
                 props_page.auth?.user.permisos == "*" ||
-                props_page.auth?.user.permisos.includes("tipo_documentos.edit")
+                props_page.auth?.user.permisos.includes("tipo_patologias.edit")
             ) {
                 buttons += `<button class="mx-0 rounded-0 btn btn-warning editar" data-id="${row.id}"><i class="fa fa-edit"></i></button>`;
             }
@@ -53,14 +53,14 @@ const columns = [
             if (
                 props_page.auth?.user.permisos == "*" ||
                 props_page.auth?.user.permisos.includes(
-                    "tipo_documentos.destroy"
+                    "tipo_patologias.destroy"
                 )
             ) {
                 buttons += ` <button class="mx-0 rounded-0 btn btn-danger eliminar"
                  data-id="${row.id}"
                  data-nombre="${row.nombre}"
                  data-url="${route(
-                     "tipo_documentos.destroy",
+                     "tipo_patologias.destroy",
                      row.id
                  )}"><i class="fa fa-trash"></i></button>`;
             }
@@ -74,24 +74,24 @@ const accion_dialog = ref(0);
 const open_dialog = ref(false);
 
 const agregarRegistro = () => {
-    limpiarTipoDocumento();
+    limpiarTipoPatologia();
     accion_dialog.value = 0;
     open_dialog.value = true;
 };
 
 const accionesRow = () => {
     // editar
-    $("#table-tipo_documento").on("click", "button.editar", function (e) {
+    $("#table-tipo_patologia").on("click", "button.editar", function (e) {
         e.preventDefault();
         let id = $(this).attr("data-id");
-        axios.get(route("tipo_documentos.show", id)).then((response) => {
-            setTipoDocumento(response.data);
+        axios.get(route("tipo_patologias.show", id)).then((response) => {
+            setTipoPatologia(response.data);
             accion_dialog.value = 1;
             open_dialog.value = true;
         });
     });
     // eliminar
-    $("#table-tipo_documento").on("click", "button.eliminar", function (e) {
+    $("#table-tipo_patologia").on("click", "button.eliminar", function (e) {
         e.preventDefault();
         let nombre = $(this).attr("data-nombre");
         let id = $(this).attr("data-id");
@@ -107,7 +107,7 @@ const accionesRow = () => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 let respuesta = await axiosDelete(
-                    route("tipo_documentos.destroy", id)
+                    route("tipo_patologias.destroy", id)
                 );
                 if (respuesta && respuesta.sw) {
                     updateDatatable();
@@ -128,9 +128,9 @@ const updateDatatable = () => {
 
 onMounted(async () => {
     datatable = initDataTable(
-        "#table-tipo_documento",
+        "#table-tipo_patologia",
         columns,
-        route("tipo_documentos.api")
+        route("tipo_patologias.api")
     );
     input_search = document.querySelector('input[type="search"]');
 
@@ -157,16 +157,16 @@ onBeforeUnmount(() => {
 });
 </script>
 <template>
-    <Head title="Tipo de Documentos"></Head>
+    <Head title="Tipo de Patologias"></Head>
 
     <!-- BEGIN breadcrumb -->
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:;">Inicio</a></li>
-        <li class="breadcrumb-item active">Tipo de Documentos</li>
+        <li class="breadcrumb-item active">Tipo de Patologias</li>
     </ol>
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
-    <h1 class="page-header">Tipo de Documentos</h1>
+    <h1 class="page-header">Tipo de Patologias</h1>
     <!-- END page-header -->
 
     <div class="row">
@@ -174,13 +174,13 @@ onBeforeUnmount(() => {
             <!-- BEGIN panel -->
             <div class="panel panel-inverse">
                 <!-- BEGIN panel-heading -->
-                <div class="panel-heading">
+                <!-- <div class="panel-heading">
                     <h4 class="panel-title btn-nuevo">
                         <button
                             v-if="
                                 props_page.auth?.user.permisos == '*' ||
                                 props_page.auth?.user.permisos.includes(
-                                    'tipo_documentos.create'
+                                    'tipo_patologias.create'
                                 )
                             "
                             type="button"
@@ -190,16 +190,16 @@ onBeforeUnmount(() => {
                             <i class="fa fa-plus"></i> Nuevo
                         </button>
                     </h4>
-                    <!-- <panel-toolbar
+                    <panel-toolbar
                         :mostrar_loading="loading"
                         @loading="updateDatatable"
-                    /> -->
-                </div>
+                    />
+                </div> -->
                 <!-- END panel-heading -->
                 <!-- BEGIN panel-body -->
                 <div class="panel-body">
                     <table
-                        id="table-tipo_documento"
+                        id="table-tipo_patologia"
                         width="100%"
                         class="table table-striped table-bordered align-middle text-nowrap tabla_datos"
                     >

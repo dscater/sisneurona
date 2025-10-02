@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 01-10-2025 a las 22:26:51
+-- Tiempo de generación: 02-10-2025 a las 13:54:46
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.2.22
 
@@ -48,7 +48,7 @@ CREATE TABLE `configuracions` (
 --
 
 INSERT INTO `configuracions` (`id`, `nombre_sistema`, `alias`, `razon_social`, `nit`, `dir`, `fono`, `web`, `actividad`, `correo`, `logo`, `created_at`, `updated_at`) VALUES
-(1, 'SISNEURONA', 'SN', 'SISNEURONA S.A.', '1111111111', 'LOS OLIVOS #111', '2222222', NULL, 'ACTIVIDAD', NULL, 'logo.png', '2025-10-01 22:21:27', '2025-10-01 22:21:27');
+(1, 'SISNEURONA', 'SINEU', 'SISNEURONA S.A.', '1111111111', 'LOS OLIVOS #111', '2222222', '', 'ACTIVIDAD', '', '1759412362_1.png', '2025-10-01 22:21:27', '2025-10-02 13:39:28');
 
 -- --------------------------------------------------------
 
@@ -86,6 +86,15 @@ CREATE TABLE `historial_accions` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `historial_accions`
+--
+
+INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `datos_original`, `datos_nuevo`, `modulo`, `fecha`, `hora`, `created_at`, `updated_at`) VALUES
+(1, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN USUARIO', '{\"ci\": \"111111\", \"id\": 2, \"dir\": \"LOS OLIVOS\", \"fono\": \"777777777\", \"foto\": \"21759412546.jpg\", \"tipo\": \"DOCTOR\", \"acceso\": \"1\", \"ci_exp\": \"LP\", \"correo\": \"juan@gmail.com\", \"nombre\": \"JUAN\", \"materno\": \"MAMANI\", \"paterno\": \"PERES\", \"usuario\": \"JPERES\", \"created_at\": \"2025-10-02T13:42:26.000000Z\", \"updated_at\": \"2025-10-02T13:42:26.000000Z\", \"fecha_registro\": \"2025-10-02\"}', NULL, 'USUARIOS', '2025-10-02', '09:42:26', '2025-10-02 13:42:26', '2025-10-02 13:42:26'),
+(2, 1, 'MODIFICACIÓN', 'EL USUARIO admin ACTUALIZÓ UN USUARIO', '{\"ci\": \"111111\", \"id\": 2, \"dir\": \"LOS OLIVOS\", \"fono\": \"777777777\", \"foto\": \"21759412546.jpg\", \"tipo\": \"DOCTOR\", \"acceso\": 1, \"ci_exp\": \"LP\", \"correo\": \"juan@gmail.com\", \"nombre\": \"JUAN\", \"status\": 1, \"materno\": \"MAMANI\", \"paterno\": \"PERES\", \"usuario\": \"JPERES\", \"created_at\": \"2025-10-02T13:42:26.000000Z\", \"updated_at\": \"2025-10-02T13:42:26.000000Z\", \"fecha_registro\": \"2025-10-02\"}', '{\"ci\": \"111111\", \"id\": 2, \"dir\": \"LOS OLIVOSS\", \"fono\": \"777777777\", \"foto\": \"21759412546.jpg\", \"tipo\": \"DOCTOR\", \"acceso\": \"1\", \"ci_exp\": \"SC\", \"correo\": \"juan@gmail.com\", \"nombre\": \"JUAN\", \"status\": 1, \"materno\": \"MAMANIS\", \"paterno\": \"PERES\", \"usuario\": \"JPERES\", \"created_at\": \"2025-10-02T13:42:26.000000Z\", \"updated_at\": \"2025-10-02T13:42:53.000000Z\", \"fecha_registro\": \"2025-10-02\"}', 'USUARIOS', '2025-10-02', '09:42:53', '2025-10-02 13:42:53', '2025-10-02 13:42:53'),
+(3, 1, 'MODIFICACIÓN', 'EL USUARIO admin ACTUALIZÓ UN USUARIO', '{\"ci\": \"111111\", \"id\": 2, \"dir\": \"LOS OLIVOSS\", \"fono\": \"777777777\", \"foto\": \"21759412546.jpg\", \"tipo\": \"DOCTOR\", \"acceso\": 1, \"ci_exp\": \"SC\", \"correo\": \"juan@gmail.com\", \"nombre\": \"JUAN\", \"status\": 1, \"materno\": \"MAMANIS\", \"paterno\": \"PERES\", \"usuario\": \"JPERES\", \"created_at\": \"2025-10-02T13:42:26.000000Z\", \"updated_at\": \"2025-10-02T13:42:53.000000Z\", \"fecha_registro\": \"2025-10-02\"}', '{\"ci\": \"111111\", \"id\": 2, \"dir\": \"LOS OLIVOS\", \"fono\": \"777777777\", \"foto\": \"21759412546.jpg\", \"tipo\": \"DOCTOR\", \"acceso\": \"1\", \"ci_exp\": \"LP\", \"correo\": \"juan@gmail.com\", \"nombre\": \"JUAN\", \"status\": 1, \"materno\": \"MAMANI\", \"paterno\": \"PERES\", \"usuario\": \"JPERES\", \"created_at\": \"2025-10-02T13:42:26.000000Z\", \"updated_at\": \"2025-10-02T13:43:00.000000Z\", \"fecha_registro\": \"2025-10-02\"}', 'USUARIOS', '2025-10-02', '09:43:00', '2025-10-02 13:43:00', '2025-10-02 13:43:00');
 
 -- --------------------------------------------------------
 
@@ -222,7 +231,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `usuario`, `nombre`, `paterno`, `materno`, `ci`, `ci_exp`, `dir`, `correo`, `fono`, `password`, `acceso`, `tipo`, `foto`, `fecha_registro`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin', 'admin', '', '0', '', '', '', '', '$2y$12$65d4fgZsvBV5Lc/AxNKh4eoUdbGyaczQ4sSco20feSQANshNLuxSC', 1, 'ADMINISTRADOR', NULL, '2025-10-01', 1, '2025-10-01 22:21:27', '2025-10-01 22:21:27');
+(1, 'admin', 'admin', 'admin', '', '0', '', '', '', '', '$2y$12$65d4fgZsvBV5Lc/AxNKh4eoUdbGyaczQ4sSco20feSQANshNLuxSC', 1, 'ADMINISTRADOR', NULL, '2025-10-01', 1, '2025-10-01 22:21:27', '2025-10-01 22:21:27'),
+(2, 'JPERES', 'JUAN', 'PERES', 'MAMANI', '111111', 'LP', 'LOS OLIVOS', 'juan@gmail.com', '777777777', '$2y$12$m43fXhEwJ5viAUdEik968OGyIYrj1FbEAgAiodYH0XHef.YZhcy7e', 1, 'DOCTOR', '21759412546.jpg', '2025-10-02', 1, '2025-10-02 13:42:26', '2025-10-02 13:43:00');
 
 --
 -- Índices para tablas volcadas
@@ -305,7 +315,7 @@ ALTER TABLE `diagnosticos`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_archivos`
@@ -341,7 +351,7 @@ ALTER TABLE `tipo_patologias`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas

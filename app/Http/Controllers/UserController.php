@@ -64,7 +64,18 @@ class UserController extends Controller
                     'label' => 'PACIENTES',
                     'cantidad' => $areas,
                     'color' => 'bg-principal',
-                    'icon' => "fa-list",
+                    'icon' => "fa-user-friends",
+                    "url" => "usuarios.index"
+                ];
+            }
+
+            if ($permisos == '*' || (is_array($permisos) && in_array('usuarios.index', $permisos))) {
+                $areas = 0;
+                $array_infos[] = [
+                    'label' => 'DIAGNOSTICOS',
+                    'cantidad' => $areas,
+                    'color' => 'bg-principal',
+                    'icon' => "fa-clipboard-list",
                     "url" => "usuarios.index"
                 ];
             }
