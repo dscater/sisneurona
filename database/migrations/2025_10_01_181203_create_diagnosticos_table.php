@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger("paciente_id");
             $table->string("archivo_edf", 900);
             $table->string("diagnostico");
+            $table->unsignedBigInteger("tipo_patologia_id");
             $table->date("fecha_registro");
             $table->integer("status")->default(1);
             $table->timestamps();

@@ -414,6 +414,13 @@ iframe {
     color: var(--secundario);
 }
 
+table.dataTable td {
+    white-space: nowrap; /* Evita saltos de línea */
+    overflow: hidden; /* Oculta el texto que sobresale */
+    text-overflow: ellipsis; /* Muestra "..." al final */
+    max-width: 250px; /* Ajusta el ancho máximo según necesites */
+}
+
 .v-container,
 .v-container table,
 .v-container input,

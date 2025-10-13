@@ -1,13 +1,31 @@
+<script>
+const breadbrums = [
+    {
+        title: "Inicio",
+        disabled: false,
+        url: route("inicio"),
+        name_url: "inicio",
+    },
+    {
+        title: "HistorialPacientes",
+        disabled: false,
+        url: "",
+        name_url: "",
+    },
+];
+</script>
 <script setup>
 import { useApp } from "@/composables/useApp";
 import { Head, Link, router, usePage } from "@inertiajs/vue3";
-import { useClientes } from "@/composables/clientes/useClientes";
+import { useHistorialPacientes } from "@/composables/historial_pacientes/useHistorialPacientes";
 import { useAxios } from "@/composables/axios/useAxios";
 import { initDataTable } from "@/composables/datatable.js";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import PanelToolbar from "@/Components/PanelToolbar.vue";
 // import { useMenu } from "@/composables/useMenu";
 import Formulario from "./Formulario.vue";
+import { useFormater } from "@/composables/useFormater";
+const { getFormatoMoneda } = useFormater();
 // const { mobile, identificaDispositivo } = useMenu();
 const { props: props_page } = usePage();
 const { setLoading } = useApp();
@@ -17,7 +35,8 @@ onMounted(() => {
     }, 300);
 });
 
-const { setCliente, limpiarCliente } = useClientes();
+const { setHistorialPaciente, limpiarHistorialPaciente } =
+    useHistorialPacientes();
 const { axiosDelete } = useAxios();
 
 const columns = [
@@ -26,39 +45,47 @@ const columns = [
         data: "id",
     },
     {
-        title: "NOMBRE",
-        data: "full_name",
+        title: "PACIENTE",
+        data: "paciente.full_name",
     },
     {
-        title: "C.I.",
-        data: "full_ci",
+        title: "MOTIVO CONSULTA",
+        data: "motivo_consulta",
     },
     {
-        title: "NACIONALIDAD",
-        data: "nacionalidad",
+        title: "HISTORIAL ENFERMEDAD ACTUAL",
+        data: "historial_enfermedad",
     },
     {
-        title: "SEXO",
-        data: "sexo",
+        title: "ANTECEDENTES PERSONALES",
+        data: "antecedentes_personales",
     },
     {
-        title: "FECHA NACIMIENTO",
-        data: "fecha_nac_t",
+        title: "ANTECEDENTES FAMILIARES",
+        data: "antecedentes_familiares",
     },
     {
-        title: "DIRECCIÓN",
-        data: "dir",
+        title: "ANTECEDENTES NO PATOLÓGICAS",
+        data: "antecedentes_no_personales",
     },
     {
-        title: "TELÉFONO",
-        data: "fono",
+        title: "EXAMENES NEUROLÓGICOS",
+        data: "examenes_neurologicos",
     },
     {
-        title: "CORREO",
-        data: "correo",
+        title: "TRATAMIENTOS",
+        data: "tratamientos",
     },
     {
-        title: "FECHA DE REGISTRO",
+        title: "EVOLUCIONES",
+        data: "evoluciones",
+    },
+    {
+        title: "CONSULTAS",
+        data: "consultas",
+    },
+    {
+        title: "FECHA REGISTRO",
         data: "fecha_registro_t",
     },
     {
@@ -69,20 +96,24 @@ const columns = [
 
             if (
                 props_page.auth?.user.permisos == "*" ||
-                props_page.auth?.user.permisos.includes("clientes.edit")
+                props_page.auth?.user.permisos.includes(
+                    "historial_pacientes.edit"
+                )
             ) {
                 buttons += `<button class="mx-0 rounded-0 btn btn-warning editar" data-id="${row.id}"><i class="fa fa-edit"></i></button>`;
             }
 
             if (
                 props_page.auth?.user.permisos == "*" ||
-                props_page.auth?.user.permisos.includes("clientes.destroy")
+                props_page.auth?.user.permisos.includes(
+                    "historial_pacientes.destroy"
+                )
             ) {
                 buttons += ` <button class="mx-0 rounded-0 btn btn-danger eliminar"
                  data-id="${row.id}"
-                 data-nombre="${row.full_name}"
+                 data-nombre="${row.paciente.full_name}"
                  data-url="${route(
-                     "clientes.destroy",
+                     "historial_pacientes.destroy",
                      row.id
                  )}"><i class="fa fa-trash"></i></button>`;
             }
@@ -96,24 +127,24 @@ const accion_dialog = ref(0);
 const open_dialog = ref(false);
 
 const agregarRegistro = () => {
-    limpiarCliente();
+    limpiarHistorialPaciente();
     accion_dialog.value = 0;
     open_dialog.value = true;
 };
 
 const accionesRow = () => {
     // editar
-    $("#table-cliente").on("click", "button.editar", function (e) {
+    $("#table-historial_paciente").on("click", "button.editar", function (e) {
         e.preventDefault();
         let id = $(this).attr("data-id");
-        axios.get(route("clientes.show", id)).then((response) => {
-            setCliente(response.data);
+        axios.get(route("historial_pacientes.show", id)).then((response) => {
+            setHistorialPaciente(response.data);
             accion_dialog.value = 1;
             open_dialog.value = true;
         });
     });
     // eliminar
-    $("#table-cliente").on("click", "button.eliminar", function (e) {
+    $("#table-historial_paciente").on("click", "button.eliminar", function (e) {
         e.preventDefault();
         let nombre = $(this).attr("data-nombre");
         let id = $(this).attr("data-id");
@@ -129,7 +160,7 @@ const accionesRow = () => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 let respuesta = await axiosDelete(
-                    route("clientes.destroy", id)
+                    route("historial_pacientes.destroy", id)
                 );
                 if (respuesta && respuesta.sw) {
                     updateDatatable();
@@ -149,7 +180,11 @@ const updateDatatable = () => {
 };
 
 onMounted(async () => {
-    datatable = initDataTable("#table-cliente", columns, route("clientes.api"));
+    datatable = initDataTable(
+        "#table-historial_paciente",
+        columns,
+        route("historial_pacientes.api")
+    );
     input_search = document.querySelector('input[type="search"]');
 
     // Agregar un evento 'keyup' al input de búsqueda con debounce
@@ -175,16 +210,16 @@ onBeforeUnmount(() => {
 });
 </script>
 <template>
-    <Head title="Clientes"></Head>
+    <Head title="Historial de Pacientes"></Head>
 
     <!-- BEGIN breadcrumb -->
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:;">Inicio</a></li>
-        <li class="breadcrumb-item active">Clientes</li>
+        <li class="breadcrumb-item active">Historial de Pacientes</li>
     </ol>
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
-    <h1 class="page-header">Clientes</h1>
+    <h1 class="page-header">Historial de Pacientes</h1>
     <!-- END page-header -->
 
     <div class="row">
@@ -198,7 +233,7 @@ onBeforeUnmount(() => {
                             v-if="
                                 props_page.auth?.user.permisos == '*' ||
                                 props_page.auth?.user.permisos.includes(
-                                    'clientes.create'
+                                    'historial_pacientes.create'
                                 )
                             "
                             type="button"
@@ -217,15 +252,24 @@ onBeforeUnmount(() => {
                 <!-- BEGIN panel-body -->
                 <div class="panel-body">
                     <table
-                        id="table-cliente"
+                        id="table-historial_paciente"
                         width="100%"
                         class="table table-striped table-bordered align-middle text-nowrap tabla_datos"
                     >
                         <thead>
                             <tr>
-                                <th width="5%"></th>
+                                <th width="2%"></th>
                                 <th></th>
-                                <th></th>
+                                <th width="10%"></th>
+                                <th width="10%"></th>
+                                <th width="10%"></th>
+                                <th width="10%"></th>
+                                <th width="10%"></th>
+                                <th width="10%"></th>
+                                <th width="10%"></th>
+                                <th width="10%"></th>
+                                <th width="10%"></th>
+                                <th width="10%"></th>
                                 <th width="5%"></th>
                             </tr>
                         </thead>

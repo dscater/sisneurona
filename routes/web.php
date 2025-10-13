@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\PacienteCOntroller;
+use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\HistorialPacienteController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\TipoPatologiaCOntroller;
 use App\Http\Controllers\ProfileController;
@@ -77,10 +78,10 @@ Route::middleware(['auth', 'permisoUsuario'])->prefix("admin")->group(function (
     );
 
     // PACIENTES
-    Route::get("pacientes/api", [PacienteCOntroller::class, 'api'])->name("pacientes.api");
-    Route::get("pacientes/paginado", [PacienteCOntroller::class, 'paginado'])->name("pacientes.paginado");
-    Route::get("pacientes/listado", [PacienteCOntroller::class, 'listado'])->name("pacientes.listado");
-    Route::resource("pacientes", PacienteCOntroller::class)->only(
+    Route::get("pacientes/api", [PacienteController::class, 'api'])->name("pacientes.api");
+    Route::get("pacientes/paginado", [PacienteController::class, 'paginado'])->name("pacientes.paginado");
+    Route::get("pacientes/listado", [PacienteController::class, 'listado'])->name("pacientes.listado");
+    Route::resource("pacientes", PacienteController::class)->only(
         ["index", "store", "edit", "show", "update", "destroy"]
     );
 
@@ -89,6 +90,14 @@ Route::middleware(['auth', 'permisoUsuario'])->prefix("admin")->group(function (
     Route::get("tipo_patologias/paginado", [TipoPatologiaCOntroller::class, 'paginado'])->name("tipo_patologias.paginado");
     Route::get("tipo_patologias/listado", [TipoPatologiaCOntroller::class, 'listado'])->name("tipo_patologias.listado");
     Route::resource("tipo_patologias", TipoPatologiaCOntroller::class)->only(
+        ["index", "store", "edit", "show", "update", "destroy"]
+    );
+
+    // HISTORIAL DEL PACIENTE
+    Route::get("historial_pacientes/api", [HistorialPacienteController::class, 'api'])->name("historial_pacientes.api");
+    Route::get("historial_pacientes/paginado", [HistorialPacienteController::class, 'paginado'])->name("historial_pacientes.paginado");
+    Route::get("historial_pacientes/listado", [HistorialPacienteController::class, 'listado'])->name("historial_pacientes.listado");
+    Route::resource("historial_pacientes", HistorialPacienteController::class)->only(
         ["index", "store", "edit", "show", "update", "destroy"]
     );
 

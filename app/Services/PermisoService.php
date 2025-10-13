@@ -37,7 +37,6 @@ class PermisoService
             "tipo_patologias.edit",
             "tipo_patologias.show",
             "tipo_patologias.update",
-            "tipo_patologias.destroy",
 
             "historial_pacientes.api",
             "historial_pacientes.listado",

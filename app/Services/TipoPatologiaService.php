@@ -15,86 +15,86 @@ use Illuminate\Validation\ValidationException;
 
 class TipoPatologiaService
 {
-    private $modulo = "TIPO DE DOCUMENTOS";
+    private $modulo = "TIPO DE PATOLOGIAS";
 
     public function __construct(private HistorialAccionService $historialAccionService) {}
 
     public function listado(): Collection
     {
-        $tipo_documentos = TipoPatologia::select("tipo_documentos.*");
-        $tipo_documentos = $tipo_documentos->get();
-        return $tipo_documentos;
+        $tipo_patologias = TipoPatologia::select("tipo_patologias.*");
+        $tipo_patologias = $tipo_patologias->get();
+        return $tipo_patologias;
     }
 
     public function listadoDataTable(int $length, int $start, int $page, string $search): LengthAwarePaginator
     {
-        $tipo_documentos = TipoPatologia::select("tipo_documentos.*");
+        $tipo_patologias = TipoPatologia::select("tipo_patologias.*");
         if ($search && trim($search) != '') {
-            $tipo_documentos->where("nombre", "LIKE", "%$search%");
+            $tipo_patologias->where("nombre", "LIKE", "%$search%");
         }
-        $tipo_documentos = $tipo_documentos->paginate($length, ['*'], 'page', $page);
-        return $tipo_documentos;
+        $tipo_patologias = $tipo_patologias->paginate($length, ['*'], 'page', $page);
+        return $tipo_patologias;
     }
 
     /**
-     * Crear tipo_documento
+     * Crear tipo_patologia
      *
      * @param array $datos
      * @return TipoPatologia
      */
     public function crear(array $datos): TipoPatologia
     {
-        $tipo_documento = TipoPatologia::create([
+        $tipo_patologia = TipoPatologia::create([
             "nombre" => mb_strtoupper($datos["nombre"]),
             "descripcion" => mb_strtoupper($datos["descripcion"]),
             "fecha_registro" => date("Y-m-d")
         ]);
         // registrar accion
-        $this->historialAccionService->registrarAccion($this->modulo, "CREACIÓN", "REGISTRO UN TIPO DE DOCUMENTO", $tipo_documento, null);
+        $this->historialAccionService->registrarAccion($this->modulo, "CREACIÓN", "REGISTRO UN TIPO DE PATOLOGIA", $tipo_patologia, null);
 
-        return $tipo_documento;
+        return $tipo_patologia;
     }
 
     /**
-     * Actualizar tipo_documento
+     * Actualizar tipo_patologia
      *
      * @param array $datos
-     * @param TipoPatologia $tipo_documento
+     * @param TipoPatologia $tipo_patologia
      * @return TipoPatologia
      */
-    public function actualizar(array $datos, TipoPatologia $tipo_documento): TipoPatologia
+    public function actualizar(array $datos, TipoPatologia $tipo_patologia): TipoPatologia
     {
-        $old_tipo_documento = clone $tipo_documento;
-        $tipo_documento->update([
+        $old_tipo_patologia = clone $tipo_patologia;
+        $tipo_patologia->update([
             "nombre" => mb_strtoupper($datos["nombre"]),
             "descripcion" => mb_strtoupper($datos["descripcion"]),
         ]);
         // registrar accion
-        $this->historialAccionService->registrarAccion($this->modulo, "MODIFICACIÓN", "ACTUALIZÓ UN TIPO DE DOCUMENTO", $old_tipo_documento, $tipo_documento);
+        $this->historialAccionService->registrarAccion($this->modulo, "MODIFICACIÓN", "ACTUALIZÓ UN TIPO DE PATOLOGIA", $old_tipo_patologia, $tipo_patologia);
 
-        return $tipo_documento;
+        return $tipo_patologia;
     }
 
     /**
-     * Eliminar tipo_documento
+     * Eliminar tipo_patologia
      *
-     * @param TipoPatologia $tipo_documento
+     * @param TipoPatologia $tipo_patologia
      * @return boolean
      */
-    public function eliminar(TipoPatologia $tipo_documento): bool
+    public function eliminar(TipoPatologia $tipo_patologia): bool
     {
         // verificar usos
-        $usos = ReporteFinanciero::where("tipo_documento_id", $tipo_documento->id)->get();
+        $usos = ReporteFinanciero::where("tipo_patologia_id", $tipo_patologia->id)->get();
         if (count($usos) > 0) {
             throw ValidationException::withMessages([
                 'error' =>  "No es posible eliminar este registro porque esta siendo utilizado por otros registros",
             ]);
         }
-        $old_tipo_documento = clone $tipo_documento;
-        $tipo_documento->delete();
+        $old_tipo_patologia = clone $tipo_patologia;
+        $tipo_patologia->delete();
 
         // registrar accion
-        $this->historialAccionService->registrarAccion($this->modulo, "ELIMINACIÓN", "ELIMINÓ UN TIPO DE DOCUMENTO", $old_tipo_documento);
+        $this->historialAccionService->registrarAccion($this->modulo, "ELIMINACIÓN", "ELIMINÓ UN TIPO DE PATOLOGIA", $old_tipo_patologia);
 
         return true;
     }
