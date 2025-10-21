@@ -3,6 +3,7 @@
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\DiagnosticoController;
 use App\Http\Controllers\HistorialPacienteController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\TipoPatologiaCOntroller;
@@ -98,6 +99,15 @@ Route::middleware(['auth', 'permisoUsuario'])->prefix("admin")->group(function (
     Route::get("historial_pacientes/paginado", [HistorialPacienteController::class, 'paginado'])->name("historial_pacientes.paginado");
     Route::get("historial_pacientes/listado", [HistorialPacienteController::class, 'listado'])->name("historial_pacientes.listado");
     Route::resource("historial_pacientes", HistorialPacienteController::class)->only(
+        ["index", "store", "edit", "show", "update", "destroy"]
+    );
+
+    // DIAGNOSTICOS
+    Route::get("diagnosticos/api", [DiagnosticoController::class, 'api'])->name("diagnosticos.api");
+    Route::get("diagnosticos/paginado", [DiagnosticoController::class, 'paginado'])->name("diagnosticos.paginado");
+    Route::get("diagnosticos/listado", [DiagnosticoController::class, 'listado'])->name("diagnosticos.listado");
+    Route::post("diagnosticos/archivo_edf", [DiagnosticoController::class, 'archivo_edf'])->name("diagnosticos.archivo_edf");
+    Route::resource("diagnosticos", DiagnosticoController::class)->only(
         ["index", "store", "edit", "show", "update", "destroy"]
     );
 

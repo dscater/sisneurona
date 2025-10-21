@@ -539,14 +539,16 @@ const logout = () => {
                 <div
                     v-if="
                         user_logeado.permisos == '*' ||
-                        user_logeado.permisos.includes('pacientes.index')
+                        user_logeado.permisos.includes('diagnosticos.index')
                     "
                     class="menu-item"
                     :class="[
-                        route_current == 'pacientes.index' ? 'active' : 'none',
+                        route_current == 'diagnosticos.index'
+                            ? 'active'
+                            : 'none',
                     ]"
                 >
-                    <Link :href="route('pacientes.index')" class="menu-link">
+                    <Link :href="route('diagnosticos.index')" class="menu-link">
                         <div class="menu-icon">
                             <i class="fa fa-clipboard-list"></i>
                         </div>
