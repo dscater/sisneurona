@@ -3,7 +3,6 @@ import { useForm, usePage } from "@inertiajs/vue3";
 import { useDiagnosticos } from "@/composables/diagnosticos/useDiagnosticos";
 import { useAxios } from "@/composables/axios/useAxios";
 import { watch, ref, computed, defineEmits, onMounted, nextTick } from "vue";
-import MiDropZone from "@/Components/MiDropZone.vue";
 const props = defineProps({
     open_dialog: {
         type: Boolean,
@@ -148,11 +147,16 @@ const getResultado = () => {
                 // form.archivo_edf = null;
                 // archivo_edf.value = null;
                 // inputFile.value.value = null;
-                form.errors = err.response.data.errors.archivo_edf
-                    ? { archivo_edf: err.response.data.errors.archivo_edf[0] }
-                    : [];
+                if (err.response.data) {
+                    form.errors = err.response.data.errors.archivo_edf
+                        ? {
+                              archivo_edf:
+                                  err.response.data.errors.archivo_edf[0],
+                          }
+                        : [];
+                    console.log(form.errors);
+                }
                 generado.value = false;
-                console.log(form.errors);
                 console.error(err);
             })
             .finally(() => {

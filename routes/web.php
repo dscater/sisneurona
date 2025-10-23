@@ -117,5 +117,14 @@ Route::middleware(['auth', 'permisoUsuario'])->prefix("admin")->group(function (
 
     Route::get('reportes/pacientes', [ReporteController::class, 'pacientes'])->name("reportes.pacientes");
     Route::get('reportes/r_pacientes', [ReporteController::class, 'r_pacientes'])->name("reportes.r_pacientes");
+
+    Route::get('reportes/historial', [ReporteController::class, 'historial'])->name("reportes.historial");
+    Route::get('reportes/r_historial', [ReporteController::class, 'r_historial'])->name("reportes.r_historial");
+
+    Route::get('reportes/diagnosticos', [ReporteController::class, 'diagnosticos'])->name("reportes.diagnosticos");
+    Route::get('reportes/r_diagnosticos', [ReporteController::class, 'r_diagnosticos'])->name("reportes.r_diagnosticos");
+
+    Route::get('reportes/gdiagnosticos', [ReporteController::class, 'gdiagnosticos'])->name("reportes.gdiagnosticos");
+    Route::get('reportes/r_gdiagnosticos', [ReporteController::class, 'r_gdiagnosticos'])->name("reportes.r_gdiagnosticos");
 });
 require __DIR__ . '/auth.php';

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\Diagnostico;
 use App\Models\Material;
+use App\Models\Paciente;
 use App\Models\Producto;
 use App\Models\Publicacion;
 use App\Models\Tarea;
@@ -46,23 +48,11 @@ class UserController extends Controller
                 ];
             }
 
-            // if ($permisos == '*' || (is_array($permisos) && in_array('areas.index', $permisos))) {
-            //     $areas = Area::select("areas.id");
-            //     $areas = $areas->count();
-            //     $array_infos[] = [
-            //         'label' => 'ÁREAS DE PRODUCCIÓN',
-            //         'cantidad' => $areas,
-            //         'color' => 'bg-principal',
-            //         'icon' => "fa-list",
-            //         "url" => "areas.index"
-            //     ];
-            // }
-
             if ($permisos == '*' || (is_array($permisos) && in_array('usuarios.index', $permisos))) {
-                $areas = 0;
+                $pacientes = Paciente::where("status", 1)->count();
                 $array_infos[] = [
                     'label' => 'PACIENTES',
-                    'cantidad' => $areas,
+                    'cantidad' => $pacientes,
                     'color' => 'bg-principal',
                     'icon' => "fa-user-friends",
                     "url" => "usuarios.index"
@@ -70,10 +60,10 @@ class UserController extends Controller
             }
 
             if ($permisos == '*' || (is_array($permisos) && in_array('usuarios.index', $permisos))) {
-                $areas = 0;
+                $diagnosticos = Diagnostico::where("status", 1)->count();
                 $array_infos[] = [
                     'label' => 'DIAGNOSTICOS',
-                    'cantidad' => $areas,
+                    'cantidad' => $diagnosticos,
                     'color' => 'bg-principal',
                     'icon' => "fa-clipboard-list",
                     "url" => "usuarios.index"

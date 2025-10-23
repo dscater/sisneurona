@@ -69,6 +69,13 @@ class PermisoService
             "reportes.r_usuarios",
             "reportes.pacientes",
             "reportes.r_pacientes",
+            "reportes.historial",
+            "reportes.r_historial",
+            "reportes.diagnosticos",
+            "reportes.r_diagnosticos",
+            "reportes.gdiagnosticos",
+            "reportes.r_gdiagnosticos",
+
         ],
         "EMPLEADO" => [],
     ];

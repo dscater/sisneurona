@@ -37,37 +37,37 @@ const columns = [
         title: "FECHA DE REGISTRO",
         data: "fecha_registro_t",
     },
-    {
-        title: "ACCIONES",
-        data: null,
-        render: function (data, type, row) {
-            let buttons = ``;
+    // {
+    //     title: "ACCIONES",
+    //     data: null,
+    //     render: function (data, type, row) {
+    //         let buttons = ``;
 
-            if (
-                props_page.auth?.user.permisos == "*" ||
-                props_page.auth?.user.permisos.includes("tipo_patologias.edit")
-            ) {
-                buttons += `<button class="mx-0 rounded-0 btn btn-warning editar" data-id="${row.id}"><i class="fa fa-edit"></i></button>`;
-            }
+    //         if (
+    //             props_page.auth?.user.permisos == "*" ||
+    //             props_page.auth?.user.permisos.includes("tipo_patologias.edit")
+    //         ) {
+    //             buttons += `<button class="mx-0 rounded-0 btn btn-warning editar" data-id="${row.id}"><i class="fa fa-edit"></i></button>`;
+    //         }
 
-            if (
-                props_page.auth?.user.permisos == "*" ||
-                props_page.auth?.user.permisos.includes(
-                    "tipo_patologias.destroy"
-                )
-            ) {
-                buttons += ` <button class="mx-0 rounded-0 btn btn-danger eliminar"
-                 data-id="${row.id}"
-                 data-nombre="${row.nombre}"
-                 data-url="${route(
-                     "tipo_patologias.destroy",
-                     row.id
-                 )}"><i class="fa fa-trash"></i></button>`;
-            }
+    //         if (
+    //             props_page.auth?.user.permisos == "*" ||
+    //             props_page.auth?.user.permisos.includes(
+    //                 "tipo_patologias.destroy"
+    //             )
+    //         ) {
+    //             buttons += ` <button class="mx-0 rounded-0 btn btn-danger eliminar"
+    //              data-id="${row.id}"
+    //              data-nombre="${row.nombre}"
+    //              data-url="${route(
+    //                  "tipo_patologias.destroy",
+    //                  row.id
+    //              )}"><i class="fa fa-trash"></i></button>`;
+    //         }
 
-            return buttons;
-        },
-    },
+    //         return buttons;
+    //     },
+    // },
 ];
 const loading = ref(false);
 const accion_dialog = ref(0);
@@ -209,7 +209,6 @@ onBeforeUnmount(() => {
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th width="5%"></th>
                             </tr>
                         </thead>
                         <div class="loading_table" v-show="loading_table">

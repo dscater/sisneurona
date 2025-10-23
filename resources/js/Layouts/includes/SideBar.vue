@@ -686,16 +686,16 @@ const logout = () => {
                 <div
                     v-if="
                         user_logeado.permisos == '*' ||
-                        user_logeado.permisos.includes('reportes.pacientes')
+                        user_logeado.permisos.includes('reportes.historial')
                     "
                     class="menu-item"
                     :class="[
-                        route_current == 'reportes.pacientes'
+                        route_current == 'reportes.historial'
                             ? 'active'
                             : 'none',
                     ]"
                 >
-                    <Link :href="route('reportes.pacientes')" class="menu-link">
+                    <Link :href="route('reportes.historial')" class="menu-link">
                         <div class="menu-icon">
                             <i class="fa fa-file-alt"></i>
                         </div>
@@ -705,16 +705,19 @@ const logout = () => {
                 <div
                     v-if="
                         user_logeado.permisos == '*' ||
-                        user_logeado.permisos.includes('reportes.pacientes')
+                        user_logeado.permisos.includes('reportes.diagnosticos')
                     "
                     class="menu-item"
                     :class="[
-                        route_current == 'reportes.pacientes'
+                        route_current == 'reportes.diagnosticos'
                             ? 'active'
                             : 'none',
                     ]"
                 >
-                    <Link :href="route('reportes.pacientes')" class="menu-link">
+                    <Link
+                        :href="route('reportes.diagnosticos')"
+                        class="menu-link"
+                    >
                         <div class="menu-icon">
                             <i class="fa fa-file-alt"></i>
                         </div>
@@ -724,16 +727,19 @@ const logout = () => {
                 <div
                     v-if="
                         user_logeado.permisos == '*' ||
-                        user_logeado.permisos.includes('reportes.pacientes')
+                        user_logeado.permisos.includes('reportes.gdiagnosticos')
                     "
                     class="menu-item"
                     :class="[
-                        route_current == 'reportes.pacientes'
+                        route_current == 'reportes.gdiagnosticos'
                             ? 'active'
                             : 'none',
                     ]"
                 >
-                    <Link :href="route('reportes.pacientes')" class="menu-link">
+                    <Link
+                        :href="route('reportes.gdiagnosticos')"
+                        class="menu-link"
+                    >
                         <div class="menu-icon">
                             <i class="fa fa-chart-column"></i>
                         </div>
