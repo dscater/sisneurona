@@ -103,6 +103,9 @@ const renderChart = (containerId, categories, data) => {
         },
         xAxis: {
             type: "category",
+            labels: {
+                enabled: false,
+            },
         },
         yAxis: {
             title: {
