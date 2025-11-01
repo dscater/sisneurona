@@ -32,12 +32,8 @@ class DiagnosticoCNNController extends Controller
         }
 
         // Resultado del diagnóstico (texto devuelto por Python)
-        $resultado = trim($process->getOutput());
-
-
-        // Retornar vista o JSON
-        return response()->json([
-            'diagnostico' => $resultado,
-        ]);
+        $salida = trim($process->getOutput());
+        $resultado = json_decode($salida, true);
+        return response()->json($resultado);
     }
 }

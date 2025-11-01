@@ -3,6 +3,23 @@ import { useForm, usePage } from "@inertiajs/vue3";
 import { useDiagnosticos } from "@/composables/diagnosticos/useDiagnosticos";
 import { useAxios } from "@/composables/axios/useAxios";
 import { watch, ref, computed, defineEmits, onMounted, nextTick } from "vue";
+import Highcharts from "highcharts";
+import exporting from "highcharts/modules/exporting";
+import accessibility from "highcharts/modules/accessibility";
+exporting(Highcharts);
+accessibility(Highcharts);
+Highcharts.setOptions({
+    lang: {
+        downloadPNG: "Descargar PNG",
+        downloadJPEG: "Descargar JPEG",
+        downloadPDF: "Descargar PDF",
+        downloadSVG: "Descargar SVG",
+        printChart: "Imprimir gráfico",
+        contextButtonTitle: "Menú de exportación",
+        viewFullscreen: "Pantalla completa",
+        exitFullscreen: "Salir de pantalla completa",
+    },
+});
 const props = defineProps({
     open_dialog: {
         type: Boolean,
@@ -66,6 +83,50 @@ const tituloDialog = computed(() => {
         ? `<i class="fa fa-plus"></i> Nuevo Diagnostico`
         : `<i class="fa fa-edit"></i> Editar Diagnostico`;
 });
+
+const confianza = ref(0);
+let chartInstance = null;
+const renderChart = (containerId, categories, data) => {
+    // si ya existe un gráfico en ese contenedor, destrúyelo
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+
+    chartInstance = Highcharts.chart(containerId, {
+        title: {
+            align: "center",
+            text: `DIAGNÓSTICO`,
+        },
+        subtitle: {
+            align: "center",
+            text: ``,
+        },
+        xAxis: {
+            type: "category",
+        },
+        yAxis: {
+            title: {
+                text: "Resultado",
+            },
+        },
+        plotOptions: {
+            series: {
+                depth: 0,
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: false,
+                    // format: "{point.y}",
+                    style: {
+                        fontSize: "11px",
+                        fontWeight: "bold",
+                    },
+                },
+            },
+        },
+        tooltip: {},
+        series: data,
+    });
+};
 
 const enviarFormulario = () => {
     let url =
@@ -137,17 +198,35 @@ const getResultado = () => {
                 if (nro_gen.value > total_gen.value) {
                     generarTotalGen();
                     nro_gen.value = 0;
+                    let nuevo = 0;
                     do {
-                        let nuevo = generarNuevoAleatorio();
-                        seleccionado.value = nuevo;
+                        nuevo = generarNuevoAleatorio();
                     } while (nuevo == seleccionado.value);
+                    seleccionado.value = nuevo;
                 }
+
+                nextTick(() => {
+                    const containerId = `container`;
+                    const container = document.getElementById(containerId);
+                    // Verificar que el contenedor exista y tenga un tamaño válido
+                    if (container) {
+                        renderChart(
+                            containerId,
+                            response.data.categories,
+                            response.data.data
+                        );
+                        confianza.value = response.data.confianza;
+                    } else {
+                        console.error(`Contenedor ${containerId} no válido.`);
+                        confianza.value = 0;
+                    }
+                });
             })
             .catch((err) => {
                 // form.archivo_edf = null;
                 // archivo_edf.value = null;
                 // inputFile.value.value = null;
-                if (err.response.data) {
+                if (err.response && err.response.data) {
                     form.errors = err.response.data.errors.archivo_edf
                         ? {
                               archivo_edf:
@@ -296,6 +375,15 @@ onMounted(() => {
                             </div>
                         </div>
                         <div class="row" v-show="!obteniendoResultado">
+                            <div class="col-12 text-center mt-3">
+                                <button
+                                    class="btn btn-outline-success"
+                                    type="button"
+                                    @click.prevent="getResultado"
+                                >
+                                    Generar <i class="fa fa-sync"></i>
+                                </button>
+                            </div>
                             <div class="col-12 mt-3 text-center mb-2">
                                 <label class="h4">Resultado</label>
                                 <br />
@@ -305,19 +393,23 @@ onMounted(() => {
                                 >
                                     {{ form.diagnostico }}
                                 </div>
-                                <div v-else class="h5 alert alert-gray">
+                                <div
+                                    class="row"
+                                    v-if="form.diagnostico && generado"
+                                >
+                                    <div class="col-12">
+                                        <h4>Confianza: {{ confianza }} %</h4>
+                                        <div id="container"></div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    v-if="!form.diagnostico"
+                                    class="h5 alert alert-gray"
+                                >
                                     Carga el archivo EDF para obtener el
                                     diagnostico
                                 </div>
-                            </div>
-                            <div class="col-12 text-center">
-                                <button
-                                    class="btn btn-outline-success"
-                                    type="button"
-                                    @click.prevent="getResultado"
-                                >
-                                    Generar <i class="fa fa-sync"></i>
-                                </button>
                             </div>
                         </div>
                         <div

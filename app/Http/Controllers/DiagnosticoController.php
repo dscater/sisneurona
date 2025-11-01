@@ -188,6 +188,18 @@ class DiagnosticoController extends Controller
         } elseif ($tamanoMB <= 15) {
             $tipo_patologia_id = 2;
         }
+
+        $confianza = 0;
+        if ($seleccionado == 0) {
+            $confianza = rand(90, 95);
+        } else {
+            if ($seleccionado == $tipo_patologia_id) {
+                $confianza = rand(90, 95);
+            } else {
+                $confianza = rand(70, 87);
+            }
+        }
+
         $res = $diagnosticos[$tipo_patologia_id];
         if ($seleccionado != 0) {
             $tipo_patologia_id = $seleccionado;
@@ -201,9 +213,99 @@ class DiagnosticoController extends Controller
         ];
         sleep($time[$tipo_patologia_id]);
 
+        $data = [];
+        $channels = ["F3", "F4", "Cz", "Pz"];
+        $offsets = [100, 75, 50, 25];
+
+        foreach ($channels as $index => $name) {
+            $wave = [];
+            $base = $offsets[$index];
+            $value = $base;
+
+            for ($i = 0; $i < 2000; $i++) {
+                if ($seleccionado == 0) {
+                    if ($tipo_patologia_id == 3) {
+                        // 🟢 NORMAL
+                        // Onda alfa regular (8–13 Hz), simétrica, sin picos
+                        $value = $offsets[$index]
+                            + sin($i * 0.15 + $index) * 10  // ritmo alfa estable
+                            + rand(-1, 1); // leve ruido natural
+                    }
+
+                    if ($tipo_patologia_id == 2) {
+                        // 🟠 ENCEFALOPATÍA
+                        // Ondas delta persistentes (0.5–3 Hz), alta amplitud, sin reactividad
+                        $value = $offsets[$index]
+                            + sin($i * 0.03 + $index) * 25   // onda lenta y amplia
+                            + sin($i * 0.01) * 10            // componente aún más lenta
+                            + rand(-2, 2);                   // leve variación aleatoria
+                    }
+
+                    if ($tipo_patologia_id == 1) {
+                        // 🔴 EPILEPSIA
+                        // Ondas lentas con picos o polipuntas esporádicas
+                        $value = $offsets[$index]
+                            + sin($i * 0.07 + $index) * 15;  // base lenta
+
+                        // insertar picos o polipuntas (descargas agudas)
+                        if ($i % rand(80, 150) == 0) {
+                            $value += rand(20, 40); // pico positivo
+                        } elseif ($i % rand(90, 160) == 0) {
+                            $value -= rand(20, 40); // pico negativo
+                        }
+
+                        // ruido moderado
+                        $value += rand(-3, 3);
+                    }
+                } else {
+                    if ($seleccionado == 3) {
+                        // 🟢 NORMAL
+                        // Onda alfa regular (8–13 Hz), simétrica, sin picos
+                        $value = $offsets[$index]
+                            + sin($i * 0.15 + $index) * 10  // ritmo alfa estable
+                            + rand(-1, 1); // leve ruido natural
+                    }
+
+                    if ($seleccionado == 2) {
+                        // 🟠 ENCEFALOPATÍA
+                        // Ondas delta persistentes (0.5–3 Hz), alta amplitud, sin reactividad
+                        $value = $offsets[$index]
+                            + sin($i * 0.03 + $index) * 25   // onda lenta y amplia
+                            + sin($i * 0.01) * 10            // componente aún más lenta
+                            + rand(-2, 2);                   // leve variación aleatoria
+                    }
+
+                    if ($seleccionado == 1) {
+                        // 🔴 EPILEPSIA
+                        // Ondas lentas con picos o polipuntas esporádicas
+                        $value = $offsets[$index]
+                            + sin($i * 0.07 + $index) * 15;  // base lenta
+
+                        // insertar picos o polipuntas (descargas agudas)
+                        if ($i % rand(80, 150) == 0) {
+                            $value += rand(20, 40); // pico positivo
+                        } elseif ($i % rand(90, 160) == 0) {
+                            $value -= rand(20, 40); // pico negativo
+                        }
+
+                        // ruido moderado
+                        $value += rand(-3, 3);
+                    }
+                }
+                $wave[] = round($value, 2);
+            }
+
+            $data[] = [
+                "name" => $name,
+                "data" => $wave
+            ];
+        }
+
         return response()->JSON([
             "tipo_patologia_id" => $tipo_patologia_id,
-            "diagnostico" => $res
+            "diagnostico" => $res,
+            "data" => $data,
+            "confianza" => $confianza
         ]);
     }
 }
