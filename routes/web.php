@@ -3,6 +3,7 @@
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\DiagnosticoCNNController;
 use App\Http\Controllers\DiagnosticoController;
 use App\Http\Controllers\HistorialPacienteController;
 use App\Http\Controllers\InicioController;
@@ -101,6 +102,9 @@ Route::middleware(['auth', 'permisoUsuario'])->prefix("admin")->group(function (
     Route::resource("historial_pacientes", HistorialPacienteController::class)->only(
         ["index", "store", "edit", "show", "update", "destroy"]
     );
+
+    // DIAGNOSTICO CNN
+    Route::post("diagnosticos/diagnosticar", [DiagnosticoCNNController::class, 'diagnosticar'])->name("diagnosticos.diagnosticar");
 
     // DIAGNOSTICOS
     Route::get("diagnosticos/api", [DiagnosticoController::class, 'api'])->name("diagnosticos.api");

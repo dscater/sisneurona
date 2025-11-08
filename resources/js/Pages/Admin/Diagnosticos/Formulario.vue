@@ -187,7 +187,8 @@ const getResultado = () => {
         formData.append("archivo_edf", archivo_edf.value);
         formData.append("seleccionado", seleccionado.value);
         axios
-            .post(route("diagnosticos.archivo_edf"), formData, {
+            // .post(route("diagnosticos.archivo_edf"), formData, {
+            .post(route("diagnosticos.diagnosticar"), formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -398,7 +399,7 @@ onMounted(() => {
                                 </div>
                                 <div
                                     class="row"
-                                    v-if="form.diagnostico && generado"
+                                    v-show="form.diagnostico && generado"
                                 >
                                     <div class="col-12">
                                         <h4>Confianza: {{ confianza }} %</h4>

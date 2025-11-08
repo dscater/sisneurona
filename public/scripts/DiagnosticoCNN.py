@@ -23,14 +23,13 @@ RUTA_ENTRENAMIENTO = os.path.join(BASE_DIR, "ENTRENAMIENTO")
 
 CARPETAS_DIAGNOSTICOS = {
     "EPILEPSIA": os.path.join(RUTA_ENTRENAMIENTO, "EPILEPSIA"),
-    "ENCEFALOPATIA": os.path.join(RUTA_ENTRENAMIENTO, "ENCEFALOPATIA"),
+    "ENCEFALOPATIAS": os.path.join(RUTA_ENTRENAMIENTO, "ENCEFALOPATIAS"),
     "NORMAL": os.path.join(RUTA_ENTRENAMIENTO, "NORMAL"),
 }
 
 # Asegurar las carpetas
 for carpeta in CARPETAS_DIAGNOSTICOS.values():
     os.makedirs(carpeta, exist_ok=True)
-
 
 # ===========================
 # UTILIDADES DE SEÑAL
@@ -97,7 +96,7 @@ def cargar_y_preprocesar_edf(ruta_archivo):
     - Filtrado banda 0.5-40 Hz,
     - Normalización (media 0, desviación 1).
     """
-    print(f"Cargando archivo EDF: {os.path.basename(ruta_archivo)}")
+    # print(f"Cargando archivo EDF: {os.path.basename(ruta_archivo)}")
     fs_default = 128  # frecuencia de muestreo por defecto en Hz (valor típico)
 
     datos_eeg = None
@@ -167,7 +166,7 @@ def cargar_y_preprocesar_edf(ruta_archivo):
     # Normalización global: media 0, desviación 1
     datos_eeg = (datos_eeg - np.mean(datos_eeg)) / (np.std(datos_eeg) + 1e-10)
 
-    print("Preprocesamiento completado: filtrado banda 0.5-40Hz, normalización aplicada.")
+    # print("Preprocesamiento completado: filtrado banda 0.5-40Hz, normalización aplicada.")
     return datos_eeg
 
 
@@ -176,27 +175,34 @@ def cargar_y_preprocesar_edf(ruta_archivo):
 # ===========================
 def construir_modelo_cnn(input_length=128):
     """
-    Construye y compila un modelo Conv1D para clasificación en 3 clases.
-    Si TensorFlow está disponible, retorna el modelo compilado.
+    Carga un modelo CNN previamente entrenado si existe.
     """
+    # print("cargando modelo...")
     try:
         import tensorflow as tf
-        from tensorflow.keras import layers, models
+        from tensorflow.keras.models import load_model
     except Exception:
         return None
 
+    ruta_modelo = os.path.join(BASE_DIR, "cnn_model.keras")
+    # print(ruta_modelo)
+    if os.path.exists(ruta_modelo):
+        # print("USANDO MODELO")
+        modelo = load_model(ruta_modelo)
+        return modelo
+
+    # Si no existe el modelo entrenado, crear uno vacío (no entrenado)
     inputs = (input_length, 1)
     model = tf.keras.Sequential([
-        tf.keras.layers.Conv1D(32, kernel_size=3, activation='relu', input_shape=inputs),
-        tf.keras.layers.MaxPooling1D(pool_size=2),
-        tf.keras.layers.Conv1D(64, kernel_size=3, activation='relu'),
-        tf.keras.layers.MaxPooling1D(pool_size=2),
+        tf.keras.layers.Conv1D(32, 3, activation='relu', input_shape=inputs),
+        tf.keras.layers.MaxPooling1D(2),
+        tf.keras.layers.Conv1D(64, 3, activation='relu'),
+        tf.keras.layers.MaxPooling1D(2),
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dropout(0.3),
         tf.keras.layers.Dense(3, activation='softmax')
     ])
-
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model
 
@@ -215,7 +221,7 @@ def realizar_prediccion(modelo, datos_eeg):
     - Si no está disponible, extrae características espectrales (potencias en bandas) y calcula probabilidades mediante una capa densa simple (operación matricial + softmax).
     Devuelve: (diagnostico_str, confianza_percent)
     """
-    etiquetas = ["EPILEPSIA", "ENCEFALOPATIA", "NORMAL"]
+    etiquetas = ["EPILEPSIA", "ENCEFALOPATIAS", "NORMAL"]
 
     # Preparar entrada (seleccionar ventana temporal de 128 muestras por canal)
     # Tomamos la media de las primeras 4 filas para cada tiempo o usamos canal por canal.
@@ -248,7 +254,7 @@ def realizar_prediccion(modelo, datos_eeg):
     feat_vec = feats.mean(axis=0)
 
     # pesos fijos que relacionan bandas con clases (diseñados para dar coherencia)
-    # Clase orden: [EPILEPSIA, ENCEFALOPATIA, NORMAL]
+    # Clase orden: [EPILEPSIA, ENCEFALOPATIAS, NORMAL]
     W = np.array([
         [0.2, 0.6, 0.1, 0.1],  # epilepsia: algo de theta/alpha, pero con rasgos agudos (modesto)
         [0.6, 0.2, 0.1, 0.1],  # encefalopatia: delta predominante
@@ -290,7 +296,7 @@ def generar_senales_eeg(diagnostico, datos_eeg):
         for i, val in enumerate(interp):
             if diagnostico == "NORMAL":
                 value = base + (val * 10.0) + math.sin(i * 0.15) * 2.0
-            elif diagnostico == "ENCEFALOPATIA":
+            elif diagnostico == "ENCEFALOPATIAS":
                 value = base + (val * 30.0) + math.sin(i * 0.03) * 10.0
             elif diagnostico == "EPILEPSIA":
                 value = base + (val * 20.0)
@@ -313,13 +319,13 @@ def generar_senales_eeg(diagnostico, datos_eeg):
 # ===========================
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print(json.dumps({"error": "No se proporcionó archivo EDF"}))
+        # print(json.dumps({"error": "No se proporcionó archivo EDF"}))
         sys.exit(1)
 
     archivo_edf = sys.argv[1]
 
     if not archivo_edf.lower().endswith(".edf"):
-        print(json.dumps({"error": "El archivo debe tener extensión .edf"}))
+        # print(json.dumps({"error": "El archivo debe tener extensión .edf"}))
         sys.exit(1)
 
     # 1) cargar y preprocesar

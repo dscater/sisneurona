@@ -59,6 +59,8 @@ class PermisoService
             "diagnosticos.destroy",
             "diagnosticos.archivo_edf",
 
+            "diagnosticos.diagnosticar",
+
             "configuracions.index",
             "configuracions.create",
             "configuracions.edit",
