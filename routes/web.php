@@ -107,6 +107,7 @@ Route::middleware(['auth', 'permisoUsuario'])->prefix("admin")->group(function (
     Route::post("diagnosticos/diagnosticar", [DiagnosticoCNNController::class, 'diagnosticar'])->name("diagnosticos.diagnosticar");
 
     // DIAGNOSTICOS
+    Route::get("diagnosticos/pdf/{diagnostico}", [DiagnosticoController::class, 'pdf'])->name("diagnosticos.pdf");
     Route::get("diagnosticos/api", [DiagnosticoController::class, 'api'])->name("diagnosticos.api");
     Route::get("diagnosticos/paginado", [DiagnosticoController::class, 'paginado'])->name("diagnosticos.paginado");
     Route::get("diagnosticos/listado", [DiagnosticoController::class, 'listado'])->name("diagnosticos.listado");

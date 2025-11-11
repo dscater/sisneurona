@@ -58,6 +58,7 @@ class PermisoService
             "diagnosticos.update",
             "diagnosticos.destroy",
             "diagnosticos.archivo_edf",
+            "diagnosticos.pdf",
 
             "diagnosticos.diagnosticar",
 
@@ -79,7 +80,59 @@ class PermisoService
             "reportes.r_gdiagnosticos",
 
         ],
-        "EMPLEADO" => [],
+        "DOCTOR" => [
+            "pacientes.api",
+            "pacientes.listado",
+            "pacientes.index",
+            "pacientes.create",
+            "pacientes.store",
+            "pacientes.edit",
+            "pacientes.show",
+            "pacientes.update",
+            "pacientes.destroy",
+
+            "tipo_patologias.api",
+            "tipo_patologias.listado",
+            "tipo_patologias.index",
+            "tipo_patologias.create",
+            "tipo_patologias.store",
+            "tipo_patologias.edit",
+            "tipo_patologias.show",
+            "tipo_patologias.update",
+
+            "historial_pacientes.api",
+            "historial_pacientes.listado",
+            "historial_pacientes.index",
+            "historial_pacientes.create",
+            "historial_pacientes.store",
+            "historial_pacientes.edit",
+            "historial_pacientes.show",
+            "historial_pacientes.update",
+            "historial_pacientes.destroy",
+
+            "diagnosticos.api",
+            "diagnosticos.listado",
+            "diagnosticos.index",
+            "diagnosticos.create",
+            "diagnosticos.store",
+            "diagnosticos.edit",
+            "diagnosticos.show",
+            "diagnosticos.update",
+            "diagnosticos.destroy",
+            "diagnosticos.archivo_edf",
+            "diagnosticos.pdf",
+
+            "diagnosticos.diagnosticar",
+
+            "reportes.pacientes",
+            "reportes.r_pacientes",
+            "reportes.historial",
+            "reportes.r_historial",
+            "reportes.diagnosticos",
+            "reportes.r_diagnosticos",
+            "reportes.gdiagnosticos",
+            "reportes.r_gdiagnosticos",
+        ],
     ];
 
     public function getPermisosUser()

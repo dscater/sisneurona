@@ -10,6 +10,25 @@ export function initDataTable(
     if (element.length !== 0 && !$.fn.dataTable.isDataTable(element)) {
         const options = {
             responsive: true,
+            responsive: {
+                details: {
+                    renderer: function (api, rowIdx, columns) {
+                        const data = columns
+                            .filter((col) => col.hidden) // ← SOLO columnas ocultas
+                            .map(
+                                (col) => `
+                    <div class="dtr-row">
+                        <div class="dtr-title">${col.title}</div>
+                        <div class="dtr-data">${col.data}</div>
+                    </div>
+                `
+                            )
+                            .join("");
+
+                        return data ? $("<div/>").append(data).html() : false;
+                    },
+                },
+            },
             serverSide: true, // Habilitar procesamiento en el lado del servidor
             columns: columns,
             language: {

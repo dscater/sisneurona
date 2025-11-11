@@ -47,6 +47,7 @@ const txtBtn = computed(() => {
 
 const listTipos = ref([
     { value: "todos", label: "TODOS" },
+    { value: "ADMINISTRADOR", label: "ADMINISTRADOR" },
     { value: "DOCTOR", label: "DOCTOR" },
 ]);
 

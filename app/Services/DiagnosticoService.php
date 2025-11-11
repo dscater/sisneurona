@@ -78,7 +78,7 @@ class DiagnosticoService
         $this->cargarArchivo($diagnostico, $datos["archivo_edf"]);
 
         // registrar accion
-        $this->historialAccionService->registrarAccion($this->modulo, "CREACIÓN", "REGISTRO UN DIAGNOSTICO", $diagnostico, null);
+        $this->historialAccionService->registrarAccion($this->modulo, "CREACIÓN", "REGISTRO UN DIAGNOSTICO", $diagnostico, null, ['paciente']);
 
         return $diagnostico;
     }
@@ -93,7 +93,7 @@ class DiagnosticoService
     public function actualizar(array $datos, Diagnostico $diagnostico): Diagnostico
     {
         $old_diagnostico = clone $diagnostico;
-        $old_diagnostico->loadMissing(["historial_archivos"]);
+        $old_diagnostico->loadMissing(["paciente"]);
 
         $diagnostico->update([
             "paciente_id" => $datos["paciente_id"],
@@ -108,7 +108,7 @@ class DiagnosticoService
         }
 
         // registrar accion
-        $this->historialAccionService->registrarAccion($this->modulo, "MODIFICACIÓN", "ACTUALIZÓ UN DIAGNOSTICO", $old_diagnostico, $diagnostico, ["historial_archivos"]);
+        $this->historialAccionService->registrarAccion($this->modulo, "MODIFICACIÓN", "ACTUALIZÓ UN DIAGNOSTICO", $old_diagnostico, $diagnostico, ["paciente"]);
 
         return $diagnostico;
     }

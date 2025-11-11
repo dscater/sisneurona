@@ -22,16 +22,16 @@ class PacienteStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "nombre" => "required",
-            "paterno" => "required",
-            "materno" => "nullable",
+            "nombre" => "required|regex:/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/u",
+            "paterno" => "required|regex:/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/u",
+            "materno" => "nullable|regex:/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/u",
             "ci" => "required",
             "ci_exp" => "nullable",
             "fecha_nac" => "required|date",
             "genero" => "required",
             "cel" => "required",
-            "dir" => "required",
-            "ocupacion" => "nullable",
+            "dir" => "required|regex:/^[0-9\pL\s\-\#\.,º°\/]+$/u",
+            "ocupacion" => "nullable|regex:/^[\pL0-9\s]+$/u",
         ];
     }
 

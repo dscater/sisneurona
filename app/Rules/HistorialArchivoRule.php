@@ -11,7 +11,7 @@ class HistorialArchivoRule implements ValidationRule
     /**
      * Tipos de archivos permitidos.
      */
-    protected $tiposPermitidos = ['application/pdf'];
+    protected $tiposPermitidos = ['application/pdf', 'biosig/edf', "biosig/EDF"];
 
     /**
      * Run the validation rule.
@@ -33,8 +33,8 @@ class HistorialArchivoRule implements ValidationRule
                     return;
                 }
 
-                // Validar tamaño (Máximo 4MB)
-                if ($archivo["file"]->getSize() > 8 * 1024 * 1024) {
+                // Validar tamaño (Máximo 100MB)
+                if ($archivo["file"]->getSize() > 100 * 1024 * 1024) {
                     $fail("El archivo {$archivo["file"]->getClientOriginalName()} supera los 8MB.");
                     return;
                 }

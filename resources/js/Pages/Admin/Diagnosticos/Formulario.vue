@@ -53,6 +53,7 @@ watch(
     async (newValue) => {
         dialog.value = newValue;
         if (dialog.value) {
+            generado.value = false;
             nro_gen.value = 0;
             generarTotalGen();
             inputFile.value.value = null;

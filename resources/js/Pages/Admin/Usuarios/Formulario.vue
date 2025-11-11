@@ -48,7 +48,7 @@ const { flash } = usePage().props;
 
 const listTipos = ref([
     { value: "ADMINISTRADOR", label: "ADMINISTRADOR" },
-    { value: "EMPLEADO", label: "EMPLEADO" },
+    { value: "DOCTOR", label: "DOCTOR" },
 ]);
 const listExpedido = [
     { value: "LP", label: "La Paz" },
@@ -378,6 +378,30 @@ onMounted(() => {
                                 >
                                     <li class="parsley-required">
                                         {{ form.errors?.acceso }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 mt-2">
+                                <label>Tipo de Usuario*</label>
+                                <select
+                                    class="form-control"
+                                    v-model="form.tipo"
+                                >
+                                    <option value="">- Seleccione -</option>
+                                    <option
+                                        v-for="item in listTipos"
+                                        :value="item.value"
+                                    >
+                                        {{ item.label }}
+                                    </option>
+                                </select>
+
+                                <ul
+                                    v-if="form.errors?.tipo"
+                                    class="parsley-errors-list filled"
+                                >
+                                    <li class="parsley-required">
+                                        {{ form.errors?.tipo }}
                                     </li>
                                 </ul>
                             </div>

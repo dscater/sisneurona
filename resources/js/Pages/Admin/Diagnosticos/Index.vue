@@ -47,6 +47,12 @@ const columns = [
 
             if (
                 props_page.auth?.user.permisos == "*" ||
+                props_page.auth?.user.permisos.includes("diagnosticos.pdf")
+            ) {
+                buttons += `<button class="mx-0 rounded-0 btn btn-primary mx-1 pdf" data-id="${row.id}"><i class="fa fa-file-pdf"></i></button>`;
+            }
+            if (
+                props_page.auth?.user.permisos == "*" ||
                 props_page.auth?.user.permisos.includes("diagnosticos.edit")
             ) {
                 buttons += `<button class="mx-0 rounded-0 btn btn-warning editar" data-id="${row.id}"><i class="fa fa-edit"></i></button>`;
@@ -80,6 +86,12 @@ const agregarRegistro = () => {
 };
 
 const accionesRow = () => {
+    // pdf
+    $("#table-diagnostico").on("click", "button.pdf", function (e) {
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+        window.open(route("diagnosticos.pdf", id), "_blank");
+    });
     // editar
     $("#table-diagnostico").on("click", "button.editar", function (e) {
         e.preventDefault();

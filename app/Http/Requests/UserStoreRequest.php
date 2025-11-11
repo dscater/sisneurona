@@ -22,12 +22,12 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "nombre" => "required|min:2",
-            "paterno" => "required|min:1",
-            "materno" => "nullable|min:1",
+            "nombre" => "required|regex:/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/u",
+            "paterno" => "required|regex:/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/u",
+            "materno" => "nullable|regex:/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/u",
             "ci" => "required|numeric|digits_between:6,10|unique:users,ci",
             "ci_exp" => "required",
-            "dir" => "required|min:1",
+            "dir" => "required|regex:/^[0-9\pL\s\-\#\.,º°\/]+$/u",
             "fono" => "required|min:1",
             "correo" => "nullable|email|unique:users,correo",
             "tipo" => "required",

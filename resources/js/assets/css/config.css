@@ -1,13 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&display=swap");
 :root {
-    --principal: #791c2e;
+    --principal: #2e5b9a;
     --principal_hover: #58111f;
-    --principal-portal: #791c2e;
+    --principal-portal: #2e5b9a;
     --principal-portal2: #465966;
-    --principal-portal3: #791c2e;
+    --principal-portal3: #2e5b9a;
     --principal_transparent: #004a80bd;
     --principal_portal_transparent: #049bd1;
-    --secundario: #79789b;
+    --secundario: #5dbb9e;
     --secundario_hover: #e9cf0e;
     --fondo_app: #e8e9eb;
     --correcto: #d2e7c9;
@@ -24,6 +24,14 @@
     --bg4: #53ba83;
     --bg5: #9fd86b;
     --bg6: #348fe2;
+}
+
+body {
+    font-size: 0.8em;
+}
+
+.modal-content {
+    font-size: 1.15em;
 }
 
 .img_qr_pago {
@@ -369,11 +377,22 @@ html {
 #sidebar::-webkit-scrollbar-track {
     background-color: #e0e0e0; /* Color de fondo de la barra */
 }
-
+.app-sidebar-minified
+    .app-sidebar:not(.app-sidebar-end)
+    .menu
+    > .menu-item.active:hover
+    > .menu-link,
+.app-sidebar-minified
+    .app-sidebar:not(.app-sidebar-end)
+    .menu
+    > .menu-item.active
+    > .menu-link {
+    background-color: var(--secundario);
+    color: white;
+}
 .app-sidebar .menu .menu-item.active > .menu-link,
 .app-sidebar .menu .menu-item.active > .menu-link .menu-icon i {
     background-color: var(--secundario);
-    color: var(--principal_hover);
     font-weight: 700;
 }
 
@@ -381,10 +400,33 @@ html {
     color: white;
 }
 
+body .app-sidebar.bg-dark .menu-item {
+    font-size: 1.14em;
+}
+
 .app-sidebar.bg-dark .menu-item .menu-submenu .menu-item.active .menu-text {
     color: var(--secundario_hover) !important;
 }
+.breadcrumb .breadcrumb-item {
+    font-size: 1.8em;
+}
 
+tr.child ul li {
+    background-color: green;
+    display: flex;
+    grid-area: 10px;
+}
+
+tr.child .dtr-title {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+tr.child .dtr-data {
+    display: block;
+    word-break: break-word;
+    white-space: normal;
+}
 /* #modal-dialog-form .modal-dialog .modal-content{
     width: calc(100vw - 90px);
 } */
